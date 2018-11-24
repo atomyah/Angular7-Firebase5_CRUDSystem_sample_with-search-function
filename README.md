@@ -13,7 +13,8 @@
 
 `students-list.components.ts`に以下を追加。
 
-`// 検索メソッド。こんなやり方で合ってるのかわからん。
+```
+// 検索メソッド。こんなやり方で合ってるのかわからん。
 searchStudent(keyword:string) {
     let s = this.crudApi.GetStudentsList();
     s.snapshotChanges().subscribe(data => { // Using snapshotChanges() method to retrieve list of data along with metadata($key)
@@ -27,12 +28,14 @@ searchStudent(keyword:string) {
         }
       })
     }) 
-  }`
+  }
+```
 
 
 `students-list.components.html`に以下を追加。
 
-`<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+```
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <!--StudentsとListが改行されてしまうため、divで固めた-->
   <div class="col-md-4">
     <span class="h2">Students List</span>
@@ -48,6 +51,7 @@ searchStudent(keyword:string) {
       <button type="button" class="btn btn-secondary gap-right" (click)="ngOnInit()">検索クリア</button>
     </span>
   </div>
-</div>`
+</div>
+```
 
 
