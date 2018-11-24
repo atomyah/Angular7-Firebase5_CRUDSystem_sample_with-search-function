@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <!--StudentsとListが改行されてしまうため、divで固めた-->
+  <div class="col-md-4">
+    <span class="h2">Students List</span>
+  </div>
+  <!-- It won't show if there is no student data（ *ngIf="hideWhenNoStudent" にて） -->
+  <!--Inputテキスト欄とボタンを改行させないように style="display:inline-flex"必要-->
+  <div class="col-md-4" style="display:inline-flex" *ngIf="hideWhenNoStudent">
+    <input #keyword type="text" class="form-control" />&nbsp;
+    <span class="input-group-btn">
+      <button type="submit" class="btn btn-success" (click)="searchStudent(keyword.value)">検索</button>
+    </span>&nbsp;
+    <span class="input-group-btn">
+      <button type="button" class="btn btn-secondary gap-right" (click)="ngOnInit()">検索クリア</button>
+    </span>
+  </div>
+</div>
+
+<div class="pricing-header mx-auto">
+
+  <!-- Preloader shows before the data loads-->
+  <div class="no-data text-center" *ngIf="preLoader">
+    <img src="assets/preloader.gif" class="preloader-icon" alt="No student">
+  </div>
+
+  <!-- No data shows when their is no student data available -->
+  <div class="no-data text-center" *ngIf="noData">
+    <img src="assets/no-student.svg" class="nodata-msg" alt="No student">
+    <p class="nodata-msg">No student added yet!</p>
+    <a routerLink="/register-student" class="btn btn-success">
+      <i class="fas fa-plus custom-fa-plus"></i>
+      Add Student
+    </a>
+  </div>
+
+  <!-- Showing students data -->
+  <div class="table-responsive" *ngIf="hideWhenNoStudent">
+    <table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg">
+      <thead>
+        <tr>
+          <th scope="col">Student Id</th>
+          <th scope="col">Student name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Mobile number</th>
+          <th class="text-center" scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- *ngFor loop iterates over Student array and fetch the student's data -->
+        <!-- パイプでつないだ後の所、paginateの設定。students-list.component.tsの方にはp: number = 1;とだけ設定があるだけ -->
+        <tr *ngFor="let student of Student | paginate: { itemsPerPage: 7, currentPage: p }; let i = index;">
+          <th scope="row">{{student.$key}}</th>
+          <td>{{student.firstName}} {{student.lastName}}</td>
+          <td>{{student.email}}</td>
+          <td>{{student.mobileNumber}}</td>
+          <td class="text-center action-block">
+            <!-- routerLink="/edit-student/{{student.$key}}" is refered to { path: 'edit-student/:id', component: EditStudentComponent } in app-routing.moudles.ts -->
+            <i class="far fa-edit" routerLink="/edit-student/{{student.$key}}"></i>
+            <i class="far fa-trash-alt" (click)="deleteStudent(student)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination paginateの設定。このままコピペすればいい。-->
+  <pagination-controls (pageChange)="p = $event" autoHide="true" responsive="true"></pagination-controls>
+</div>
